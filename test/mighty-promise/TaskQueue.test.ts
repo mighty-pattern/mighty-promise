@@ -55,17 +55,17 @@ describe("TaskQueue", () => {
     it("will not start before previous tasks are done", async () => {
       const queue = new TaskQueue({ maxParallelNum: 1 });
       let done = false;
-      queue.push(() => delay(20));
-      queue.push(() => delay(20));
+      queue.push(() => delay(200));
+      queue.push(() => delay(200));
       queue.push(() => {
         done = true;
       });
       expect(done).toBeFalsy();
-      await delay(10);
+      await delay(100);
       expect(done).toBeFalsy();
-      await delay(20);
+      await delay(200);
       expect(done).toBeFalsy();
-      await delay(20);
+      await delay(200);
       expect(done).toBeTruthy();
     });
 
@@ -107,15 +107,15 @@ describe("TaskQueue", () => {
         queue.push(() => {
           count++;
         });
-        queue.push(() => delay(20));
+        queue.push(() => delay(200));
       }
 
-      await delay(10);
+      await delay(100);
       expect(count).toBe(1);
-      await delay(20);
+      await delay(200);
       expect(count).toBe(2);
       queue.destroy();
-      await delay(200);
+      await delay(2000);
       expect(count).toBe(2);
     });
 
