@@ -1,34 +1,23 @@
 import { throwIfTimeout } from "../utils/timeout";
+import { LinkedPromise } from "./LinkedPromise";
 
 type ReleaseFunction = () => void;
 export class Lock {
-  private lockPromise?: Promise<void>;
+  private linkedPromise: LinkedPromise = new LinkedPromise();
+
   acquire(timeout?: number): Promise<ReleaseFunction> {
-    if (!this.lockPromise) {
-      let releaseFunction: ReleaseFunction;
-      this.lockPromise = new Promise((r) => {
-        releaseFunction = r;
-      });
-
-      return Promise.resolve(releaseFunction!);
+    if (!timeout) {
+      return this.linkedPromise.pushTask();
     }
 
-    const acquirePromise = new Promise<ReleaseFunction>((resolve) => {
-      const currentLock = this.lockPromise!;
-      const nextPromise = currentLock.then(() => {
-        this.lockPromise = new Promise((release) => {
-          resolve(release);
-        });
+    return throwIfTimeout(this.linkedPromise.pushTask(), timeout);
+  }
 
-        return this.lockPromise;
-      });
-      this.lockPromise = nextPromise;
-    });
-
-    if (timeout) {
-      return throwIfTimeout(acquirePromise, timeout);
+  acquireImmediately(timeout?: number): Promise<ReleaseFunction> {
+    if (!timeout) {
+      return this.linkedPromise.pushTaskFront();
     }
 
-    return acquirePromise;
+    return throwIfTimeout(this.linkedPromise.pushTaskFront(), timeout);
   }
 }

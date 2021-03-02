@@ -1,6 +1,14 @@
 import { retry, delay } from "../../src/utils";
 
 describe("retry", () => {
+  it("retry normal callbacks", async () => {
+    let i = 0;
+    await retry(() => {
+      i += 1;
+    });
+    expect(i).toBe(1);
+  });
+
   it("retry with timeout", async () => {
     let times = 0;
     retry(
@@ -8,16 +16,16 @@ describe("retry", () => {
         times += 1;
         throw new Error();
       },
-      { times: 10, sleepTimeout: 10 }
+      { times: 10, sleepTimeout: 100 }
     ).catch(() => {});
     expect(times).toEqual(1);
-    await delay(5);
+    await delay(50);
     expect(times).toEqual(1);
-    await delay(5);
+    await delay(50);
     expect(times).toEqual(2);
-    await delay(10);
+    await delay(100);
     expect(times).toEqual(3);
-    await delay(10);
+    await delay(100);
     expect(times).toEqual(4);
   });
 

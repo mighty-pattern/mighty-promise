@@ -8,7 +8,7 @@ export async function retry(
   }: {
     sleepTimeout?: number;
     times?: number;
-  }
+  } = {}
 ) {
   while (times) {
     try {

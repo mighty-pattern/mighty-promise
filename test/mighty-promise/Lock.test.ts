@@ -21,7 +21,7 @@ describe("Lock", () => {
   it("throw if timeout", async () => {
     const lock = new Lock();
     await lock.acquire();
-    expect(async () => {
+    await expect(async () => {
       await lock.acquire(20);
     }).rejects.toThrow(TimeoutError);
   });
@@ -29,7 +29,7 @@ describe("Lock", () => {
   it("will not throw if acquired in time", async (done) => {
     const lock = new Lock();
     const release = await lock.acquire();
-    lock.acquire(100).then(done);
+    lock.acquire(100).then(() => done());
     await delay(10);
     release();
   });
@@ -95,5 +95,46 @@ describe("Lock", () => {
     release();
     await delay(0);
     expect(owner).toBe("B");
+  });
+
+  it("acquireImmediately", async () => {
+    const lock = new Lock();
+    const nums: number[] = [];
+    for (let i = 0; i < 5; i++) {
+      lock.acquire().then(async (release) => {
+        nums.push(i);
+        await delay(100);
+        release();
+      });
+    }
+
+    lock.acquireImmediately().then(async (release) => {
+      nums.push(100);
+      await delay(10);
+      release();
+    });
+
+    await delay(0);
+    expect(nums).toStrictEqual([0]);
+    await delay(120);
+    expect(nums).toStrictEqual([0, 100, 1]);
+    lock.acquireImmediately().then(async (release) => {
+      nums.push(101);
+      await delay(100);
+      release();
+    });
+    await delay(100);
+    expect(nums).toStrictEqual([0, 100, 1, 101]);
+    await delay(400);
+    expect(nums).toStrictEqual([0, 100, 1, 101, 2, 3, 4]);
+  });
+
+  it("acquireImmediately timeout", async () => {
+    const lock = new Lock();
+    lock.acquire();
+    await delay(0);
+    await expect(() => lock.acquireImmediately(10)).rejects.toThrow(
+      TimeoutError
+    );
   });
 });

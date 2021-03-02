@@ -72,31 +72,31 @@ describe("TaskQueue", () => {
     it("can be paused and resumed", async () => {
       const queue = new TaskQueue({ maxParallelNum: 1 });
       let count = 0;
-      queue.push(() => delay(20));
+      queue.push(() => delay(100));
       queue.push(() => {
         count++;
       });
-      queue.push(() => delay(20));
+      queue.push(() => delay(100));
       queue.push(() => {
         count++;
       });
-      queue.push(() => delay(20));
+      queue.push(() => delay(100));
       queue.push(() => {
         count++;
       });
 
       expect(count).toBe(0);
-      await delay(30);
+      await delay(150);
       expect(count).toBe(1);
 
       queue.pause();
-      await delay(50);
+      await delay(200);
 
       expect(count).toBe(1);
       queue.start();
-      await delay(20);
+      await delay(100);
       expect(count).toBe(2);
-      await delay(20);
+      await delay(100);
       expect(count).toBe(3);
     });
 
@@ -133,6 +133,40 @@ describe("TaskQueue", () => {
         expect(i).toBe(count);
         await delay(20);
       }
+    });
+
+    it("will not throw if task failed and onError is configured", async () => {
+      let caught = false;
+      const queue = new TaskQueue({
+        maxParallelNum: 1,
+        taskInterval: 20,
+        onError: (e) => {
+          caught = true;
+        },
+      });
+      let executed = false;
+      queue.push(() => {
+        throw new Error();
+      });
+
+      queue.push(() => {
+        executed = true;
+      });
+
+      await delay(100);
+      expect(executed).toBeTruthy();
+      expect(caught).toBeTruthy();
+    });
+
+    it.skip("will throw if task failed and onError is not configured", async () => {
+      const queue = new TaskQueue({
+        maxParallelNum: 1,
+        taskInterval: 20,
+      });
+      queue.push(() => {
+        throw new Error();
+      });
+      await delay(10);
     });
   });
 });

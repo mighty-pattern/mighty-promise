@@ -3,9 +3,11 @@ import { LinkedList } from "../../src/data-structure/LinkedList";
 describe("LinkedList", () => {
   it("basic push & pushFont", () => {
     const list = new LinkedList<number>();
+    expect(list.empty).toBeTruthy();
     expect(list.head).toBeUndefined();
     expect(list.tail).toBeUndefined();
     list.push(2);
+    expect(list.empty).toBeFalsy();
     expect(list.size).toBe(1);
     expect(list.toArray()).toStrictEqual([2]);
     expect(list.head).toBe(2);
@@ -22,6 +24,7 @@ describe("LinkedList", () => {
     list.push(2);
     list.push(3);
     list.push(4);
+    expect(list.empty).toBeFalsy();
     expect(list.toArray()).toStrictEqual([1, 2, 3, 4]);
     // [1, 2, 3, 4]
     expect(list.popFront()).toBe(1);
@@ -41,6 +44,7 @@ describe("LinkedList", () => {
     const list = new LinkedList<number>();
     expect(list.pop()).toBeUndefined();
     expect(list.popFront()).toBeUndefined();
+    expect(list.empty).toBeTruthy();
     expect(list.size).toBe(0);
   });
 
@@ -52,6 +56,7 @@ describe("LinkedList", () => {
     expect(list.size).toBe(0);
     expect(list.head).toBeUndefined();
     expect(list.tail).toBeUndefined();
+    expect(list.empty).toBeTruthy();
   });
 
   it("combo", () => {
@@ -61,6 +66,7 @@ describe("LinkedList", () => {
     expect(list.toArray()).toStrictEqual(["b", "c"]);
     expect(list.push("d"));
     expect(list.size).toBe(3);
+    expect(list.empty).toBeFalsy();
     expect(list.toArray()).toStrictEqual(["b", "c", "d"]);
     expect(list.popFront()).toBe("b");
     expect(list.popFront()).toBe("c");
@@ -77,5 +83,6 @@ describe("LinkedList", () => {
     expect(list.size).toBe(0);
     expect(list.popFront()).toBeUndefined();
     expect(list.pop()).toBeUndefined();
+    expect(list.empty).toBeTruthy();
   });
 });
