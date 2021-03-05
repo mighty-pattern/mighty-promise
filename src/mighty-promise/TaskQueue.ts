@@ -47,10 +47,6 @@ export class TaskQueue {
       }
 
       targetParallelNum -= 1;
-      if (worker.busy) {
-        continue;
-      }
-
       worker.run();
     }
   }
@@ -86,7 +82,7 @@ class TaskWorker {
     this._busy = true;
     try {
       while (this.queue.size && !this._destroyed) {
-        await this.runTask(this.queue.pop());
+        await this.runTask(this.queue.pop()!);
         await delay(this.interval);
       }
     } finally {
@@ -98,11 +94,7 @@ class TaskWorker {
     this._destroyed = true;
   }
 
-  private async runTask(task?: Task) {
-    if (!task) {
-      return;
-    }
-
+  private async runTask(task: Task) {
     try {
       await task();
     } catch (e) {

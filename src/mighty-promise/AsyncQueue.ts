@@ -43,9 +43,7 @@ export class AsyncQueue<T> {
       await delay(0);
     }
 
-    if (this.pushRelease) {
-      this.pushRelease();
-    }
+    this.pushRelease?.call(this);
   }
 
   get size() {
