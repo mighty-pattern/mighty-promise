@@ -533,6 +533,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/chance@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/@types/chance/download/@types/chance-1.1.1.tgz?cache=0&sync_timestamp=1613379566370&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fchance%2Fdownload%2F%40types%2Fchance-1.1.1.tgz#2e06aeaf58130470f2dfe96017cdbc403de002f9"
+  integrity sha1-Lgaur1gTBHDy3+lgF828QD3gAvk=
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
@@ -963,6 +968,11 @@ chalk@^4.0.0:
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
+
+chance@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.npm.taobao.org/chance/download/chance-1.1.7.tgz#e99dde5ac16681af787b5ba94c8277c090d6cfe8"
+  integrity sha1-6Z3eWsFmga94e1upTIJ3wJDWz+g=
 
 char-regex@^1.0.2:
   version "1.0.2"

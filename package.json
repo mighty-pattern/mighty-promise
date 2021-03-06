@@ -29,7 +29,9 @@
   },
   "homepage": "https://github.com/zxch3n/mighty-promise#readme",
   "devDependencies": {
+    "@types/chance": "^1.1.1",
     "@types/jest": "^26.0.20",
+    "chance": "^1.1.7",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.2",
     "ts-node": "^9.1.1",
