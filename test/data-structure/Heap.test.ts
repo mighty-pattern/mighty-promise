@@ -1,5 +1,6 @@
 import { Heap } from "../../src/data-structure/Heap";
 import { Chance } from "chance";
+import { NotFoundError } from "../../src/error/NotFoundError";
 
 describe("Heap", () => {
   it("push", () => {
@@ -89,5 +90,11 @@ describe("Heap", () => {
       expect(Array.from(heap)).toStrictEqual(input);
       heap.clear();
     }
+  });
+
+  it("remove item no exist", () => {
+    const heap = new Heap<number>({ key: (x) => x });
+    heap.push(2);
+    expect(() => heap.remove(3)).toThrow(NotFoundError);
   });
 });

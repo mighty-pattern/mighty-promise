@@ -116,7 +116,7 @@ describe("Lock", () => {
 
     await delay(0);
     expect(nums).toStrictEqual([0]);
-    await delay(120);
+    await delay(150);
     expect(nums).toStrictEqual([0, 100, 1]);
     lock.acquireImmediately().then(async (release) => {
       nums.push(101);

@@ -1,3 +1,5 @@
+import { NotFoundError } from "../error/NotFoundError";
+
 export class Heap<T> {
   private array: T[] = [];
   private compare: (a: T, b: T) => number;
@@ -83,7 +85,7 @@ export class Heap<T> {
   public remove(v: T) {
     const index = this.array.indexOf(v);
     if (index === -1) {
-      return;
+      throw new NotFoundError();
     }
 
     const arr = this.array;

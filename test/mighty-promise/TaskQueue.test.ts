@@ -20,13 +20,13 @@ describe("TaskQueue", () => {
       const queue = new TaskQueue({ maxParallelNum: 10 });
       for (let i = 0; i < 4; i++) {
         expect(queue.runningNum).toBe(i);
-        queue.push(() => delay(i * 100));
+        queue.push(() => delay(i * 200));
       }
 
       for (let i = 0; i < 4; i++) {
-        await delay(50);
+        await delay(100);
         expect(queue.runningNum).toBe(3 - i);
-        await delay(50);
+        await delay(100);
       }
     });
 

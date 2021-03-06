@@ -59,13 +59,13 @@ describe("LinkedPromise", () => {
     }
 
     expect(owners).toStrictEqual([]);
-    await delay(210);
+    await delay(250);
     expect(owners).toStrictEqual([0, 1, 2]);
     linkedPromise.pause();
-    await delay(310);
+    await delay(300);
     expect(owners).toStrictEqual([0, 1, 2]);
     linkedPromise.start();
-    await delay(310);
+    await delay(300);
     expect(owners).toStrictEqual([0, 1, 2, 3, 4]);
   });
 
@@ -81,7 +81,7 @@ describe("LinkedPromise", () => {
       });
     }
 
-    await delay(210);
+    await delay(250);
     expect(owners).toStrictEqual([0, 1, 2]);
     linkedPromise.pushTaskFront().then((release) => {
       owners.push(100);
