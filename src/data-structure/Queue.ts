@@ -1,6 +1,7 @@
+import { IQueue } from "./IQueue";
 import { LinkedList } from "./LinkedList";
 
-export class Queue<T> {
+export class Queue<T> implements IQueue<T> {
   private list: LinkedList<T> = new LinkedList();
 
   push(item: T) {

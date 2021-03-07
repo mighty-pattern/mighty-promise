@@ -1,4 +1,5 @@
 import { TaskQueue } from "../../src/mighty-promise/TaskQueue";
+import { DefaultErrorHandler } from "../../src/mighty-promise/TaskQueue/ErrorHandler";
 import { delay } from "../../src/utils";
 
 describe("TaskQueue", () => {
@@ -135,6 +136,19 @@ describe("TaskQueue", () => {
       }
     });
 
+    it("will execute task synchronously when interval is null", async () => {
+      const queue = new TaskQueue({ maxParallelNum: 1, taskInterval: null });
+      let count = 0;
+      for (let i = 0; i < 10; i++) {
+        queue.push(() => {
+          count += 1;
+        });
+      }
+
+      await delay(0);
+      expect(count).toBe(10);
+    });
+
     it("will not throw if task failed and onError is configured", async () => {
       let caught = false;
       const queue = new TaskQueue({
@@ -167,6 +181,15 @@ describe("TaskQueue", () => {
         throw new Error();
       });
       await delay(10);
+    });
+  });
+
+  describe("DefaultErrorHandler", () => {
+    it("wiil throw", () => {
+      const error = new Error();
+      expect(() => {
+        DefaultErrorHandler(error);
+      }).toThrow(error);
     });
   });
 });

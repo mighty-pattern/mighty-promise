@@ -1,6 +1,7 @@
 import { Heap } from "./Heap";
+import { IQueue } from "./IQueue";
 
-export class PriorityQueue<T extends {}> {
+export class PriorityQueue<T extends {}> implements IQueue<T> {
   private heap: Heap<T>;
   private set: Set<T> = new Set();
   constructor(compare: (a: T, b: T) => number) {
