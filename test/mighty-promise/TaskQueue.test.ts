@@ -136,6 +136,24 @@ describe("TaskQueue", () => {
       }
     });
 
+    test("return task promise after push", async () => {
+      const queue = new TaskQueue({ maxParallelNum: 1, taskInterval: 10 });
+      let count = 0;
+      let resolved = 0;
+      for (let i = 0; i < 10; i++) {
+        const promise = queue.push(async () => {
+          count += 1;
+        });
+        promise.then(() => {
+          expect(count).toBe(1 + i);
+          resolved++;
+        });
+      }
+
+      await delay(100);
+      expect(resolved).toBe(10);
+    });
+
     it("will execute task synchronously when interval is null", async () => {
       const queue = new TaskQueue({ maxParallelNum: 1, taskInterval: null });
       let count = 0;
