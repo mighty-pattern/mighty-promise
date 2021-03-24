@@ -159,9 +159,14 @@ describe("TaskQueue", () => {
         },
       });
       let executed = false;
-      queue.push(() => {
-        throw new Error();
-      });
+      let caughtInPromise = false;
+      queue
+        .push(() => {
+          throw new Error();
+        })
+        .catch((e) => {
+          caughtInPromise = true;
+        });
 
       queue.push(() => {
         executed = true;
@@ -170,6 +175,7 @@ describe("TaskQueue", () => {
       await delay(100);
       expect(executed).toBeTruthy();
       expect(caught).toBeTruthy();
+      expect(caughtInPromise).toBeTruthy();
     });
 
     it.skip("will throw if task failed and onError is not configured", async () => {

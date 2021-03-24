@@ -1,13 +1,13 @@
 import { IQueue } from "../../data-structure";
 import { delay } from "../../utils";
-import { ITask } from "./ITask";
 import { ErrorHandler } from "./ErrorHandler";
+import { IInnerTask } from "./ITask";
 
 export class TaskWorker {
   private _busy: boolean = false;
   private _destroyed: boolean = false;
   constructor(
-    private queue: IQueue<ITask>,
+    private queue: IQueue<IInnerTask<any>>,
     private interval: number | null,
     private onError: ErrorHandler
   ) {}
@@ -34,11 +34,13 @@ export class TaskWorker {
     this._destroyed = true;
   }
 
-  private async runTask(task: ITask) {
+  private async runTask(task: IInnerTask<unknown>) {
     try {
-      await task.callback();
+      const res = await task.callback();
+      task.resolve(res);
     } catch (e) {
       this.onError(e);
+      task.reject(e);
     }
   }
 

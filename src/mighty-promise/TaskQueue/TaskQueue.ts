@@ -1,11 +1,11 @@
 import { IQueue } from "../../data-structure";
 import { Queue } from "../../data-structure/Queue";
 import { ErrorHandler, DefaultErrorHandler } from "./ErrorHandler";
-import { ITask } from "./ITask";
+import { IInnerTask, ITask } from "./ITask";
 import { TaskWorker } from "./TaskWorker";
 
-export class TaskQueue<T extends ITask> {
-  protected queue: IQueue<ITask>;
+export class TaskQueue<T> {
+  protected queue: IQueue<IInnerTask<T>>;
   private workers: TaskWorker[] = [];
   private maxParallelNum = 1;
   private taskInterval: number | null = 0;
@@ -19,20 +19,28 @@ export class TaskQueue<T extends ITask> {
     taskInterval?: number | null;
     onError?: ErrorHandler;
   } = {}) {
-    this.queue = new Queue<ITask>();
+    this.queue = new Queue<IInnerTask<T>>();
     this.maxParallelNum = Math.max(maxParallelNum, 1);
     this.taskInterval = taskInterval;
     this.onError = onError;
   }
 
-  push(task: (() => void) | T) {
+  push(task: (() => T) | ITask<T>) {
+    let resolve!: (value: T) => void;
+    let reject!: (err?: any) => void;
+    const promise = new Promise<T>((_resolve, _reject) => {
+      resolve = _resolve;
+      reject = _reject;
+    });
+
     if (task instanceof Function) {
-      this.queue.push({ callback: task });
+      this.queue.push({ callback: task, reject, resolve });
     } else {
-      this.queue.push(task);
+      this.queue.push({ ...task, resolve, reject });
     }
 
     this.start();
+    return promise;
   }
 
   start(): void {
