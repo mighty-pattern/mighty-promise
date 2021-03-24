@@ -1,2 +1,6 @@
 src/
 test/
+docs/
+.vscode/
+.github/
+jest.config.js
