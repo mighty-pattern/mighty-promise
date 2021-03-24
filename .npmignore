@@ -4,3 +4,4 @@ docs/
 .vscode/
 .github/
 jest.config.js
+coverage/
