@@ -150,7 +150,7 @@ describe("TaskQueue", () => {
         });
       }
 
-      await delay(100);
+      await delay(110);
       expect(resolved).toBe(10);
     });
 
