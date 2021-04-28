@@ -9,9 +9,10 @@
   "source": "./src/index.ts",
   "scripts": {
     "test": "jest",
-    "build": "yarn clean && tsc --declaration && tsc --module commonjs --outdir lib",
-    "clean": "rm -rf lib && rm -rf module",
-    "doc": "typedoc src/index.ts"
+    "build": "yarn clean && tsc --declaration --module es2015 --outdir module && tsc --module commonjs --outdir lib && yarn build-deno",
+    "clean": "rm -rf lib && rm -rf module && rm -rf deno_lib",
+    "doc": "typedoc src/index.ts",
+    "build-deno": "denoify"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@types/chance": "^1.1.1",
     "@types/jest": "^26.0.20",
     "chance": "^1.1.7",
+    "denoify": "^0.6.5",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.2",
     "ts-node": "^9.1.1",

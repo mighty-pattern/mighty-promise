@@ -1,1 +1,1 @@
-export * from "./src/index";
+export * from "./deno_lib/index.ts";

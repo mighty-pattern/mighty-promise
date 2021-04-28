@@ -17,7 +17,7 @@
     "jsx": "preserve",
     "rootDir": "./src",
     "preserveSymlinks": true,
-    "outDir": "module/"
+    "outDir": "lib/"
   },
   "include": ["src"]
 }
