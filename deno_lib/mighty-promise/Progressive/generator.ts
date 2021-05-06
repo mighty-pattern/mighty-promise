@@ -1,12 +1,14 @@
 import { ProgressiveOptions, ProgressiveReturn } from "./type.ts";
 import { delay } from "../../utils/delay.ts";
+import { awaitIdle } from "../../utils/requestIdleCallback.ts";
 
 export function progressiveGenerate<T>(
   generator: Generator<T>,
   {
     maxExecutionDuration = 2,
-    minInterval = 16,
+    minInterval = 0,
     ignoreOutput = false,
+    useIdleCallback = false,
   }: ProgressiveOptions & { ignoreOutput?: boolean } = {}
 ): ProgressiveReturn<T[]> {
   let done = false;
@@ -17,6 +19,9 @@ export function progressiveGenerate<T>(
       !ignoreOutput && ans.push(value);
       if (Date.now() >= startTime + maxExecutionDuration) {
         await delay(minInterval);
+        if (useIdleCallback) {
+          await awaitIdle();
+        }
         startTime = Date.now();
       }
 

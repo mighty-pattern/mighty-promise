@@ -1,6 +1,7 @@
 export interface ProgressiveOptions {
   minInterval?: number;
-  maxExecutionTime?: number;
+  maxExecutionDuration?: number;
+  useIdleCallback?: boolean;
 }
 
 export interface ProgressiveReturn<T> {
