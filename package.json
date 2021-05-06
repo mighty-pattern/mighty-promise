@@ -1,7 +1,7 @@
 {
   "name": "mighty-promise",
   "sideEffects": false,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Powerful promise utils collections",
   "module": "module/index.js",
   "main": "lib/index.js",
@@ -13,7 +13,7 @@
     "clean": "rm -rf lib && rm -rf module && rm -rf deno_lib",
     "doc": "typedoc src/index.ts",
     "build-deno": "denoify",
-    "release": "standard-version"
+    "release": "yarn build && standard-version"
   },
   "repository": {
     "type": "git",
