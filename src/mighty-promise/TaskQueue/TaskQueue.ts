@@ -2,27 +2,34 @@ import { IQueue } from "../../data-structure";
 import { Queue } from "../../data-structure/Queue";
 import { ErrorHandler, DefaultErrorHandler } from "./ErrorHandler";
 import { IInnerTask, ITask } from "./ITask";
-import { TaskWorker } from "./TaskWorker";
+import { TaskWorker, IdleWorker } from "./TaskWorker";
+import { BaseTaskWorker } from "./TaskWorker/BaseTaskWorker";
+
+export interface TaskQueueConfig {
+  maxParallelNum?: number;
+  taskInterval?: number | null;
+  onError?: ErrorHandler;
+  useIdleWorker?: boolean;
+}
 
 export class TaskQueue<T> {
   protected queue: IQueue<IInnerTask<T>>;
-  private workers: TaskWorker[] = [];
+  private workers: BaseTaskWorker[] = [];
   private maxParallelNum = 1;
   private taskInterval: number | null = 0;
   private onError: ErrorHandler;
+  private useIdleWorker: boolean;
   constructor({
     maxParallelNum = 1,
     taskInterval = 0,
     onError = DefaultErrorHandler,
-  }: {
-    maxParallelNum?: number;
-    taskInterval?: number | null;
-    onError?: ErrorHandler;
-  } = {}) {
+    useIdleWorker = false,
+  }: TaskQueueConfig = {}) {
     this.queue = new Queue<IInnerTask<T>>();
     this.maxParallelNum = Math.max(maxParallelNum, 1);
     this.taskInterval = taskInterval;
     this.onError = onError;
+    this.useIdleWorker = useIdleWorker;
   }
 
   push(task: (() => T) | ITask<T>) {
@@ -48,10 +55,12 @@ export class TaskQueue<T> {
       this.queue.size + this.runningNum,
       this.maxParallelNum
     );
+
     while (this.workers.length < targetParallelNum) {
-      this.workers.push(
-        new TaskWorker(this.queue, this.taskInterval, this.onError)
-      );
+      const worker = this.useIdleWorker
+        ? new IdleWorker(this.queue, this.onError)
+        : new TaskWorker(this.queue, this.onError, this.taskInterval);
+      this.workers.push(worker);
     }
 
     for (const worker of this.workers) {

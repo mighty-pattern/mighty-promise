@@ -196,6 +196,47 @@ describe("TaskQueue", () => {
       expect(caughtInPromise).toBeTruthy();
     });
 
+    it("can use idleWorker", async () => {
+      const queue = new TaskQueue({
+        maxParallelNum: 1,
+        useIdleWorker: true,
+      });
+
+      let v = 0;
+      for (let i = 0; i < 20; i++) {
+        queue.push({
+          callback: () => {
+            v++;
+          },
+        });
+      }
+
+      await delay(1);
+      expect(v).toBe(20);
+    });
+
+    it("can use idleWorker for async task", async () => {
+      const queue = new TaskQueue({
+        maxParallelNum: 1,
+        useIdleWorker: true,
+      });
+
+      let v = 0;
+      for (let i = 0; i < 5; i++) {
+        queue.push({
+          callback: async () => {
+            v++;
+            await delay(10);
+          },
+        });
+      }
+
+      await delay(1);
+      expect(v).toBe(1);
+      await delay(80);
+      expect(v).toBe(5);
+    });
+
     it.skip("will throw if task failed and onError is not configured", async () => {
       const queue = new TaskQueue({
         maxParallelNum: 1,

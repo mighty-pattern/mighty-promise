@@ -26,19 +26,19 @@ describe("IntervalTask", () => {
     let count = 0;
     const interval = new IntervalTask(() => {
       count += 1;
-    }, 20);
+    }, 40);
 
     for (let j = 0; j < 5; j++) {
       count = 0;
       interval.start();
-      await delay(10);
+      await delay(20);
       for (let i = 1; i < 5; i++) {
         expect(count).toBe(i);
-        await delay(20);
+        await delay(40);
       }
 
       interval.stop();
-      await delay(50);
+      await delay(100);
       expect(count).toBe(5);
     }
   });

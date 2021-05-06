@@ -1,7 +1,6 @@
 import { PriorityQueue } from "../../data-structure/PriorityQueue";
-import { ErrorHandler } from "./ErrorHandler";
 import { IInnerTask, ITask } from "./ITask";
-import { TaskQueue } from "./TaskQueue";
+import { TaskQueue, TaskQueueConfig } from "./TaskQueue";
 
 export class PriorityTaskQueue<
   Task extends ITask<TaskReturn>,
@@ -9,16 +8,11 @@ export class PriorityTaskQueue<
 > extends TaskQueue<TaskReturn> {
   constructor({
     compare,
-    maxParallelNum,
-    taskInterval,
-    onError,
-  }: {
+    ...config
+  }: TaskQueueConfig & {
     compare: (a: Task, b: Task) => number;
-    maxParallelNum?: number;
-    taskInterval?: number | null;
-    onError?: ErrorHandler;
   }) {
-    super({ onError, taskInterval, maxParallelNum });
+    super(config);
     this.queue = new PriorityQueue<
       Task & Pick<IInnerTask<TaskReturn>, "reject" | "resolve">
     >(compare);
