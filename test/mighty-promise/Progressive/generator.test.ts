@@ -23,7 +23,7 @@ describe("Progressive", () => {
       }
 
       const { abort } = progressiveGenerate(iter(), {
-        maxExecutionTime: 1,
+        maxExecutionDuration: 1,
         minInterval: 200,
       });
       await delay(10);
@@ -62,6 +62,25 @@ describe("Progressive", () => {
       }
 
       const { promise, abort } = progressiveGenerate(iter());
+      await delay(10);
+      const value = i;
+      abort();
+      await delay(500);
+      expect(i).toBe(value);
+      await promise;
+    });
+
+    it("can use idle callback", async () => {
+      let i = 0;
+      function* iter() {
+        for (; ; i++) {
+          yield i;
+        }
+      }
+
+      const { promise, abort } = progressiveGenerate(iter(), {
+        useIdleCallback: true,
+      });
       await delay(10);
       const value = i;
       abort();

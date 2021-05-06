@@ -16,7 +16,7 @@ describe("Progressive", () => {
           cur = v;
           return v;
         },
-        { maxExecutionTime: 0, minInterval: 100 }
+        { maxExecutionDuration: 0, minInterval: 100 }
       );
       await delay(50);
       expect(cur).toBe(1);
@@ -35,7 +35,7 @@ describe("Progressive", () => {
           cur = v;
           return v;
         },
-        { maxExecutionTime: 0, minInterval: 100 }
+        { maxExecutionDuration: 0, minInterval: 100 }
       );
       await delay(50);
       expect(cur).toBe(1);

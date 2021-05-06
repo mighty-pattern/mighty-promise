@@ -4,7 +4,7 @@ import { delay } from "../../utils/delay.ts";
 export function progressiveGenerate<T>(
   generator: Generator<T>,
   {
-    maxExecutionTime = 2,
+    maxExecutionDuration = 2,
     minInterval = 16,
     ignoreOutput = false,
   }: ProgressiveOptions & { ignoreOutput?: boolean } = {}
@@ -15,7 +15,7 @@ export function progressiveGenerate<T>(
     let startTime = Date.now();
     for (const value of generator) {
       !ignoreOutput && ans.push(value);
-      if (Date.now() >= startTime + maxExecutionTime) {
+      if (Date.now() >= startTime + maxExecutionDuration) {
         await delay(minInterval);
         startTime = Date.now();
       }
