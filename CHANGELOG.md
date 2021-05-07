@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/zxch3n/mighty-promise/compare/v0.0.4...v0.0.5) (2021-05-07)
+
+
+### Features
+
+* debounce ([ebd04ae](https://github.com/zxch3n/mighty-promise/commit/ebd04ae3af7103e6df86546f040b06fc21ef0786))
+
 ### [0.0.4](https://github.com/zxch3n/mighty-promise/compare/v0.0.2...v0.0.4) (2021-05-06)
 
 
