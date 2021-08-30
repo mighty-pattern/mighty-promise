@@ -16,7 +16,7 @@ export function progressiveGenerate<T>(
     const ans: T[] = [];
     let startTime = Date.now();
     for (const value of generator) {
-      !ignoreOutput && ans.push(value);
+      !ignoreOutput && ans.push(await value);
       if (Date.now() >= startTime + maxExecutionDuration) {
         await delay(minInterval);
         if (useIdleCallback) {
