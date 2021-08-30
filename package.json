@@ -1,7 +1,7 @@
 {
   "name": "mighty-promise",
   "sideEffects": false,
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Powerful promise utils collections",
   "module": "module/index.js",
   "main": "lib/index.js",
