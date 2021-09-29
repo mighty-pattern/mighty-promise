@@ -137,4 +137,19 @@ describe("Lock", () => {
       TimeoutError
     );
   });
+
+  it("acquire and release", async () => {
+    const lock = new Lock();
+    await Promise.all([
+      lock.acquire().then((release) => release()),
+      lock.acquire().then((release) => release()),
+      lock.acquire().then((release) => release()),
+    ]);
+    await delay(100);
+    await Promise.all([
+      lock.acquire().then((release) => release()),
+      lock.acquire().then((release) => release()),
+      lock.acquire().then((release) => release()),
+    ]);
+  });
 });

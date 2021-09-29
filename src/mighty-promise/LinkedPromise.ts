@@ -1,5 +1,4 @@
 import { LinkedList } from "../data-structure";
-import { delay } from "../utils";
 
 type DoneFunction = () => void;
 interface PromiseItem {
@@ -50,6 +49,7 @@ export class LinkedPromise {
       const front = this.list.popFront()!;
       await new Promise((r) => front.resolve(r as DoneFunction));
     }
+    this.running = false;
   }
 
   destroy() {
