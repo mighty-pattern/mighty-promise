@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/zxch3n/mighty-promise/compare/v0.0.7...v0.0.8) (2021-09-29)
+
+
+### Bug Fixes
+
+* fix linked promise bug ([02ac6b9](https://github.com/zxch3n/mighty-promise/commit/02ac6b9c9872884555dfc9bc42eac888aa10b88b))
+
 ### [0.0.7](https://github.com/zxch3n/mighty-promise/compare/v0.0.6...v0.0.7) (2021-08-30)
 
 ### [0.0.6](https://github.com/zxch3n/mighty-promise/compare/v0.0.5...v0.0.6) (2021-08-30)
