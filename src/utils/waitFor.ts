@@ -7,12 +7,12 @@ export async function waitFor({
   interval = FRAME,
   timeout = MINUTE,
 }: {
-  condition: () => boolean;
+  condition: () => boolean | Promise<boolean>;
   interval?: number;
   timeout?: number;
 }): Promise<void> {
   const startTime = +new Date();
-  while (!condition()) {
+  while (!(await condition())) {
     if (+new Date() - startTime > timeout) {
       throw new TimeoutError();
     }

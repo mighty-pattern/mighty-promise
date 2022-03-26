@@ -18,6 +18,28 @@ describe("waitFor", () => {
     expect(done).toBeTruthy();
   });
 
+  it("works on async condition", async () => {
+    let condition = false;
+    let done = false;
+    const promise = waitFor({
+      condition: async () => {
+        await delay(100);
+        return condition;
+      },
+      interval: 0,
+    });
+    promise.then(() => {
+      done = true;
+    });
+
+    expect(done).toBeFalsy();
+    await delay(20);
+    expect(done).toBeFalsy();
+    done = true;
+    await delay(10);
+    expect(done).toBeTruthy();
+  });
+
   it("throw timeout error after timeout", async () => {
     try {
       await waitFor({
